@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+code/Luval.AI.Database.UnitTests/private.txt

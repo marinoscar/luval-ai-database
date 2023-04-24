@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luval.AI.Database", "Luval.AI.Database\Luval.AI.Database.csproj", "{94C6D1EA-5C4E-47F2-9C38-3239B1528894}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luval.AI.Database.UnitTests", "Luval.AI.Database.UnitTests\Luval.AI.Database.UnitTests.csproj", "{625E9AC9-A07B-463A-88E6-2F5A1FFCA3B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Luval.OpenAI", "..\..\Luval.OpenAI\code\Luval.OpenAI\Luval.OpenAI.csproj", "{4F3BAE7F-F982-4660-9516-6E5E2DB6A595}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94C6D1EA-5C4E-47F2-9C38-3239B1528894}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C6D1EA-5C4E-47F2-9C38-3239B1528894}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C6D1EA-5C4E-47F2-9C38-3239B1528894}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C6D1EA-5C4E-47F2-9C38-3239B1528894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{625E9AC9-A07B-463A-88E6-2F5A1FFCA3B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{625E9AC9-A07B-463A-88E6-2F5A1FFCA3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{625E9AC9-A07B-463A-88E6-2F5A1FFCA3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{625E9AC9-A07B-463A-88E6-2F5A1FFCA3B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3BAE7F-F982-4660-9516-6E5E2DB6A595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3BAE7F-F982-4660-9516-6E5E2DB6A595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3BAE7F-F982-4660-9516-6E5E2DB6A595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3BAE7F-F982-4660-9516-6E5E2DB6A595}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B983F387-1F13-4340-9CEA-61F1C3483487}
+	EndGlobalSection
+EndGlobal
