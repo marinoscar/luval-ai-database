@@ -15,9 +15,9 @@ namespace Luval.AI.Database.UnitTests
             return new NetworkCredential("", File.ReadAllText("private.txt")).SecurePassword;
         }
 
-		public static string ConnStr()
+		public static string GetConnStr()
 		{
-			return "";
+			return @"Server=.\SQLEXPRESS;Database=AdventureWorksDW2019;Trusted_Connection=True;";
 		}
         public static string GetDbSchema()
         {
@@ -64,6 +64,11 @@ CREATE TABLE [dbo].[CompanySales](
 GO
 ";
         }
+
+		public static DataPrompt CreateDataPrompt()
+		{
+			return new DataPrompt(GetApiKey(), GetConnStr(), GetDbSchema());
+		}
 
 
     }

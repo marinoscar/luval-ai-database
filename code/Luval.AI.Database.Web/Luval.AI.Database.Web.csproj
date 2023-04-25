@@ -1,17 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Luval.OpenAI\code\Luval.OpenAI\Luval.OpenAI.csproj" />
+    <ProjectReference Include="..\Luval.AI.Database.MVM\Luval.AI.Database.MVM.csproj" />
+    <ProjectReference Include="..\Luval.AI.Database\Luval.AI.Database.csproj" />
   </ItemGroup>
 
 </Project>

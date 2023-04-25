@@ -13,6 +13,28 @@ namespace Luval.AI.Database
         }
 
 
+        public Dataset ExecuteToDs(string sqlCommand)
+        {
+            var data = ExecuteToList(sqlCommand);
+            var swCsv = new StringWriter();
+            var swKp = new StringWriter();
+            var rows = data.Select(i => string.Format("({0})", string.Join(",", i.Values))).ToArray();
+            swKp.Write("[");
+            swKp.Write(string.Join(",", rows));
+            swKp.Write("]");
+            swCsv.WriteLine(string.Join(",", data.First().Keys));
+            foreach (var row in data)
+            {
+                swCsv.WriteLine(string.Join(",", row.Values));
+            }
+            return new Dataset()
+            {
+                Array = swKp.ToString(),
+                Csv = swCsv.ToString(),
+                Data = data
+            };
+        }
+
         public string ExecuteToCsv(string sqlCommand)
         {
             var sw = new StringWriter();
