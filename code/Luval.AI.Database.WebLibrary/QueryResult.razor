@@ -1,30 +1,47 @@
 ﻿@using Luval.AI.Database.MVM;
+@using System.Diagnostics;
 @page "/"
 
-@if (ViewModel != null && !string.IsNullOrWhiteSpace(ViewModel.Response))
-{
-    <div class="container">
+<div class="container">
+    <div style="height:15px" />
 
-        <div style="height:15px" />
+    @if (ViewModel != null)
+    {
 
-        <div class="alert alert-primary" style="padding-top:10px" role="alert">
-            <h4 class="alert-heading">Question</h4>
-            <p>@ViewModel?.Prompt</p>
-        </div>
+        @if (!string.IsNullOrWhiteSpace(ViewModel.Prompt))
+        {
 
 
-        <div class="alert alert-light" style="padding-top:10px" role="alert">
-            <h4 class="alert-heading">Response</h4>
-            <p>@ViewModel?.Response</p>
-        </div>
+            <div class="alert alert-primary" style="padding-top:10px;padding-bottom:10px" role="alert">
+                <h4 class="alert-heading">Question</h4>
+                <p>@ViewModel?.Prompt</p>
+            </div>
 
-        <div class="alert alert-secondary" style="padding-top:10px" role="alert">
-            <h4 class="alert-heading">Sql Query</h4>
-            <p>@ViewModel?.SqlQuery</p>
-        </div>
+            @if (ViewModel.InProgress)
+            {
+                <div class="d-flex align-items-center" style="padding-top:10px">
+                    <strong>Loading...</strong>
+                    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>
+            }
 
-    </div>
-}
+            @if (!string.IsNullOrWhiteSpace(ViewModel.SqlQuery))
+            {
+                <div class="alert alert-light" style="padding-top:10px" role="alert">
+                    <h4 class="alert-heading">Response</h4>
+                    <p>@ViewModel?.Response</p>
+                </div>
+
+                <div class="alert alert-secondary" style="padding-top:10px" role="alert">
+                    <h4 class="alert-heading">Sql Query</h4>
+                    <p>@ViewModel?.SqlQuery</p>
+                </div>
+            }
+        }
+
+    }
+
+</div>
 
 @code {
 
@@ -36,10 +53,25 @@
         base.OnParametersSet();
         if (ViewModel == null) return;
         ViewModel.RequestCompleted += Done;
+        ViewModel.RequestStarted += Started;
+        ViewModel.RequestFailed += Error;
     }
 
     private void Done(object item, EventArgs e)
     {
+        Debug.WriteLine("Done");
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void Started(object item, EventArgs e)
+    {
+        Debug.WriteLine("Started");
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void Error(object item, EventArgs e)
+    {
+        Debug.WriteLine("Error");
         InvokeAsync(StateHasChanged);
     }
 
