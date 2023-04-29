@@ -1,9 +1,21 @@
-﻿@page "/"
+﻿@using Luval.AI.Database.MVM;
+@using Luval.AI.Database.WebLibrary
+@inject ChatMVM ViewModel
+
+@page "/"
 
 <PageTitle>Index</PageTitle>
+<div class="row">
+    <div class="col">
+        <DataPromptUI ViewModel="ViewModel" />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <QueryResult ViewModel="ViewModel"/>
+    </div>
+</div>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code{
+    
+}

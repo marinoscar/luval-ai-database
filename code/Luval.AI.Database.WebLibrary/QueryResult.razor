@@ -1,0 +1,46 @@
+﻿@using Luval.AI.Database.MVM;
+@page "/"
+
+@if (ViewModel != null && !string.IsNullOrWhiteSpace(ViewModel.Response))
+{
+    <div class="container">
+
+        <div style="height:15px" />
+
+        <div class="alert alert-primary" style="padding-top:10px" role="alert">
+            <h4 class="alert-heading">Question</h4>
+            <p>@ViewModel?.Prompt</p>
+        </div>
+
+
+        <div class="alert alert-light" style="padding-top:10px" role="alert">
+            <h4 class="alert-heading">Response</h4>
+            <p>@ViewModel?.Response</p>
+        </div>
+
+        <div class="alert alert-secondary" style="padding-top:10px" role="alert">
+            <h4 class="alert-heading">Sql Query</h4>
+            <p>@ViewModel?.SqlQuery</p>
+        </div>
+
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public ChatMVM? ViewModel { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (ViewModel == null) return;
+        ViewModel.RequestCompleted += Done;
+    }
+
+    private void Done(object item, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+}

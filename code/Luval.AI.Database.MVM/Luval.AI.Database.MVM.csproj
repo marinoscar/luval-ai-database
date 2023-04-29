@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Luval.AI.Database\Luval.AI.Database.csproj" />
+  </ItemGroup>
+
 </Project>

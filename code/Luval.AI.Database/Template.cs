@@ -36,8 +36,11 @@ Only use the tables listed below.
 
 {schema}
 
+For questions that include information about about a country for example USA use United States instead, or for FR use France
+
 Question: {input}
 
+Just provide the SQL statement and nothing more
 
 ";
 
@@ -49,7 +52,10 @@ You have created the following SQL statement to answer the question
 {sql}
 This is the result of the query
 {result}
-please provide answer to the following question: {input}
+
+if the result of the query is NULL then respond ""I can't answer that question"" other wise
+please provide answer to the following question and make sure to format the numbers
+with thousand separator and two decimal points: {input}
 ";
 
         public static string SqlChart = @"

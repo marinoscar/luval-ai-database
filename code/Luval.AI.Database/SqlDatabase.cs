@@ -16,6 +16,12 @@ namespace Luval.AI.Database
         public Dataset ExecuteToDs(string sqlCommand)
         {
             var data = ExecuteToList(sqlCommand);
+            if(data.Count() <= 1)
+            {
+                var firstValue = data.First().Values.First();
+                if (firstValue == null || firstValue == DBNull.Value)
+                    return new Dataset() { Data = data, Array = "NULL", Csv = "NULL" };
+            }
             var swCsv = new StringWriter();
             var swKp = new StringWriter();
             var rows = data.Select(i => string.Format("({0})", string.Join(",", i.Values))).ToArray();

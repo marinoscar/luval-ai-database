@@ -65,9 +65,9 @@ GO
 ";
         }
 
-		public static DataPrompt CreateDataPrompt()
+		public static DataAnalyzer CreateDataPrompt()
 		{
-			return new DataPrompt(GetApiKey(), GetConnStr(), GetDbSchema());
+			return new DataAnalyzer(GetApiKey(), GetConnStr(), GetDbSchema());
 		}
 
 

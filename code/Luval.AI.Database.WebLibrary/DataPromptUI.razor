@@ -1,0 +1,40 @@
+﻿@using Luval.AI.Database.MVM;
+@page "/"
+
+<div class="container">
+    <div class="form-container">
+        <form>
+            <div class="mb-3">
+                <label for="promptInput" class="form-label">Enter your question:</label>
+                <textarea type="email" class="form-control" id="promptInput" aria-describedby="promptHelp" rows="3"
+                          @onchange="@((args) => Assign(args))"></textarea>
+                <div id="promptHelp" class="form-text">Provide a question about the company sales information</div>
+            </div>
+            <button type="submit" class="btn btn-primary" @onclick="Send">
+                <i class="bi bi-send-fill"></i> Submit
+            </button>
+        </form>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public ChatMVM? ViewModel { get; set; }
+
+    private async void Send()
+    {
+        if (ViewModel == null) return;
+        ViewModel.Run();
+        
+    }
+
+    private void Assign(ChangeEventArgs args)
+    {
+        if (ViewModel == null) return;
+        if (args == null) return;
+        ViewModel.Prompt = Convert.ToString(args.Value);
+
+    }
+
+}
