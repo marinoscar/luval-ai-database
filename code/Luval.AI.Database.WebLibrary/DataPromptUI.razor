@@ -14,10 +14,6 @@
             <button id="btn-send" type="submit" class="btn btn-primary" @onclick="Send">
                 <i class="bi bi-send-fill"></i> Submit
             </button>
-            @if(ViewModel != null && ViewModel.InProgress)
-            {
-                JS.InvokeVoidAsync("document.getElementById(\"btn-send\").setAttribute(\"disabled\", \"true\")");
-            }
         </form>
     </div>
 </div>

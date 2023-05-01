@@ -36,6 +36,34 @@
                     <h4 class="alert-heading">Sql Query</h4>
                     <p>@ViewModel?.SqlQuery</p>
                 </div>
+
+                @if (ViewModel.Data != null && ViewModel.Data.Any())
+                {
+                    <div class="alert alert-light" style="padding-top:10px" role="alert">
+                        <h4 class="alert-heading">Dataset</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    @foreach (var col in ViewModel.Data.First().Keys)
+                                    {
+                                        <th scope="col">@col.ToString()</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in ViewModel.Data)
+                                {
+                                    <tr>
+                                        @foreach (var col in ViewModel.Data.First().Keys)
+                                        {
+                                            <td scope="row">@row[col].ToString()</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             }
         }
 
