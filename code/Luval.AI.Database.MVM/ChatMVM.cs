@@ -5,22 +5,24 @@ namespace Luval.AI.Database.MVM
 {
     public class ChatMVM
     {
-        private DataAnalyzer _dataPrompt;
+        private DataAnalyzer _analyzer;
 
-        public ChatMVM(DataAnalyzer dataPrompt)
+        public ChatMVM(DataAnalyzer analyzer)
         {
-            _dataPrompt = dataPrompt;
+            _analyzer = analyzer;
+            _analyzer.StreamLogMessage += DoLogMessage;
         }
-
 
         public event EventHandler RequestCompleted;
         public event EventHandler RequestFailed;
         public event EventHandler RequestStarted;
+        public event EventHandler RequestMessage;
 
         public string? Prompt { get; set; }
         public string? Response { get; set; }
         public string? Chart { get; set; }
         public string? SqlQuery { get; set; }
+        public string? LogMessage { get; set; }
         public bool InProgress { get; set; }
 
         public IEnumerable<IDictionary<string, object>> Data { get; set; }
@@ -28,7 +30,7 @@ namespace Luval.AI.Database.MVM
 
         public async void Run()
         {
-            if (_dataPrompt == null) return;
+            if (_analyzer == null) return;
             if (string.IsNullOrWhiteSpace(Prompt)) return;
             Clear();
 
@@ -37,7 +39,7 @@ namespace Luval.AI.Database.MVM
             var result = default(DataResponse);
             try
             {
-                result = await _dataPrompt.SendAsync(Prompt);
+                result = await _analyzer.SendAsync(Prompt);
             }
             catch (Exception ex)
             {
@@ -58,9 +60,17 @@ namespace Luval.AI.Database.MVM
 
         private void Clear()
         {
+            LogMessage = null;
             Response = null;
+            SqlQuery = null;
             Chart = null;
             Data = new List<Dictionary<string, object>>();
+        }
+
+        private void DoLogMessage(object? sender, MessageEventArgs e)
+        {
+            LogMessage = e.LogMessage;
+            RequestMessage?.Invoke(this, EventArgs.Empty);
         }
 
 

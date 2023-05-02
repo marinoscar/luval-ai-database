@@ -10,8 +10,8 @@ namespace Luval.AI.Database
     {
         public MessageEventArgs(string msg)
         {
-            Message = msg;
+            LogMessage = msg;
         }
-        public string Message { get; set; } 
+        public string LogMessage { get; set; } 
     }
 }

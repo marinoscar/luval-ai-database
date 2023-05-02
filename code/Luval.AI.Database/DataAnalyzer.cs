@@ -19,30 +19,46 @@ namespace Luval.AI.Database
         public EventHandler<RequestEventArgs> StreamQueryResult;
         public EventHandler<RequestEventArgs> StreamChartResult;
         public EventHandler<RequestEventArgs> StreamResponseResult;
+        public EventHandler<MessageEventArgs> StreamLogMessage;
 
 
-        public DataAnalyzer(SecureString apikey, string connectionString, string dataSchema)
+        public DataAnalyzer(CompletionEndpoint api, string connectionString, string dataSchema)
         {
             Database = new SqlDatabase(() => new SqlConnection(connectionString));
-            Api = new CompletionEndpoint(new ApiAuthentication(apikey));
+            Api = api;
             DbSchema = dataSchema;
+        }
+
+        public DataAnalyzer(ApiAuthentication apiAuth, string connectionString, string dataSchema) : this(new CompletionEndpoint(apiAuth), connectionString, dataSchema)
+        {
+        }
+
+        public DataAnalyzer(SecureString apikey, string connectionString, string dataSchema) : this(new ApiAuthentication(apikey), connectionString, dataSchema)
+        {
+
         }
 
         public async Task<DataResponse> SendAsync(string prompt)
         {
+            OnStreamLogMessage("Starting request");
             var result = new DataResponse();
             var dataPrompt = PrePrompt(prompt);
             var query = new StringBuilder();
+            OnStreamLogMessage("Sending data questions");
+
             await foreach (var q in Api.StreamAsync(dataPrompt, temperature: 0))
             {
                 OnStreamQueryResult(q);
                 query.Append(q.ToString());
             }
+
+            OnStreamLogMessage("Getting data");
             result.SqlQuery = query.ToString();
             result.Data = Database.ExecuteToDs(query.ToString());
 
             var responsePrompt = PostPrompt(prompt, query.ToString(), result.Data.Array);
 
+            OnStreamLogMessage("Getting AI response");
             var response = new StringBuilder();
             await foreach (var q in Api.StreamAsync(responsePrompt, temperature: 0.7))
             {
@@ -51,6 +67,7 @@ namespace Luval.AI.Database
             }
             result.Response = response.ToString();
 
+            OnStreamLogMessage("Building chart");
             var chartPrompt = ChartPrompt(prompt, query.ToString(), result.Data.Array);
             var chart = new StringBuilder();
             await foreach (var q in Api.StreamAsync(chartPrompt, temperature: 0))
@@ -61,6 +78,11 @@ namespace Luval.AI.Database
 
             result.HtmlChart = chart.ToString();
             return result;
+        }
+
+        private void OnStreamLogMessage(string logMessage)
+        {
+            StreamLogMessage?.Invoke(this, new MessageEventArgs(logMessage));
         }
 
         private void OnStreamQueryResult(CompletionResponse completionResponse)

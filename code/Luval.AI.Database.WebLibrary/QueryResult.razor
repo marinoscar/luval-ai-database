@@ -19,9 +19,11 @@
 
             @if (ViewModel.InProgress)
             {
-                <div class="d-flex align-items-center" style="padding-top:10px">
-                    <strong>Loading...</strong>
-                    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                <div style="padding-top:10px;padding-bottom:15px">
+                    <div class="d-flex align-items-center" style="padding-top:10px">
+                        <strong>@ViewModel.LogMessage</strong>
+                        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                    </div>
                 </div>
             }
 
@@ -83,11 +85,18 @@
         ViewModel.RequestCompleted += Done;
         ViewModel.RequestStarted += Started;
         ViewModel.RequestFailed += Error;
+        ViewModel.RequestMessage += Message;
     }
 
     private void Done(object item, EventArgs e)
     {
         Debug.WriteLine("Done");
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void Message(object item, EventArgs e)
+    {
+        Debug.WriteLine("Message");
         InvokeAsync(StateHasChanged);
     }
 

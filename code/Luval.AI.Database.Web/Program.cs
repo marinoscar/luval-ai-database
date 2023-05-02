@@ -1,5 +1,7 @@
 using Luval.AI.Database.MVM;
 using Luval.AI.Database.Web.Data;
+using Luval.OpenAI;
+using Luval.OpenAI.Completion;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Net;
@@ -12,16 +14,21 @@ namespace Luval.AI.Database.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var apiKey = 
+            var apiKey =
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<WeatherForecastService>();
 
-            var key = new NetworkCredential("", builder.Configuration.GetSection("AppSettings").GetValue<string>("OpenAIApiKey")).SecurePassword;
+            var instance = builder.Configuration.GetSection("AppSettings").GetValue<string>("OpenAIInstance");
+            var openAIKey = builder.Configuration.GetSection("AppSettings").GetValue<string>("OpenAIApiKey");
+            var openAiAuth = new ApiAuthentication(new NetworkCredential("", builder.Configuration.GetSection("AppSettings").GetValue<string>("OpenAIApiKey")).SecurePassword);
             var connStr = builder.Configuration.GetSection("AppSettings").GetValue<string>("ConnectionString");
+            var api = new CompletionEndpoint(openAiAuth);
+            if (!string.IsNullOrWhiteSpace(instance)) 
+                api = CompletionEndpoint.CreateAzure(openAiAuth, instance);
 
-            builder.Services.AddSingleton<ChatMVM>(new ChatMVM(new DataAnalyzer(key, connStr, GetDbSchema())));
+            builder.Services.AddSingleton<ChatMVM>(new ChatMVM(new DataAnalyzer(api, connStr, GetDbSchema())));
 
             var app = builder.Build();
             // Configure the HTTP request pipeline.
