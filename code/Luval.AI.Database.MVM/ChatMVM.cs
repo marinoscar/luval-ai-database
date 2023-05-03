@@ -23,6 +23,7 @@ namespace Luval.AI.Database.MVM
         public string? Chart { get; set; }
         public string? SqlQuery { get; set; }
         public string? LogMessage { get; set; }
+        public string? ErrorMessage { get; set; }
         public bool InProgress { get; set; }
 
         public IEnumerable<IDictionary<string, object>> Data { get; set; }
@@ -45,12 +46,13 @@ namespace Luval.AI.Database.MVM
             {
                 Debug.WriteLine(ex);
                 InProgress = false;
+                ErrorMessage = ex.ToString();
                 RequestFailed?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
             Response = result.Response;
-            Chart = result.HtmlChart;
+            Chart = result.HtmlChart.Replace("</code>", "").Replace("<code>", "");
             Data = result.Data.Data;
             SqlQuery = result.SqlQuery;
 
@@ -60,6 +62,7 @@ namespace Luval.AI.Database.MVM
 
         private void Clear()
         {
+            ErrorMessage = null;
             LogMessage = null;
             Response = null;
             SqlQuery = null;

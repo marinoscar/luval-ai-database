@@ -1,5 +1,8 @@
 ﻿@using Luval.AI.Database.MVM;
 @using System.Diagnostics;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@inject IJSRuntime JS
 @page "/"
 
 <div class="container">
@@ -26,12 +29,27 @@
                     </div>
                 </div>
             }
+            @if (!string.IsNullOrEmpty(ViewModel.ErrorMessage))
+            {
+                <div style="padding-top:10px;padding-bottom:15px">
+                    <div class="alert alert-danger" role="alert">
+                        @ViewModel.ErrorMessage
+                    </div>
+                </div>
+            }
 
             @if (!string.IsNullOrWhiteSpace(ViewModel.SqlQuery))
             {
                 <div class="alert alert-light" style="padding-top:10px" role="alert">
                     <h4 class="alert-heading">Response</h4>
                     <p>@ViewModel?.Response</p>
+                    @if (!string.IsNullOrWhiteSpace(ViewModel.Chart))
+                    {
+                        <hr />
+                        <div style="padding-top:15px;padding-bottom:15px">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    }
                 </div>
 
                 <div class="alert alert-secondary" style="padding-top:10px" role="alert">
@@ -86,6 +104,16 @@
         ViewModel.RequestStarted += Started;
         ViewModel.RequestFailed += Error;
         ViewModel.RequestMessage += Message;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (ViewModel != null && !string.IsNullOrWhiteSpace(ViewModel.Chart))
+        {
+            //JS.InvokeVoidAsync(string.Format("window.plotChart('myChart', {0});", ViewModel.Chart));
+            JS.InvokeVoidAsync("window.plotChart", "myChart", ViewModel.Chart);
+        }
     }
 
     private void Done(object item, EventArgs e)

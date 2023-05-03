@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Luval.AI.Database.MVM\Luval.AI.Database.MVM.csproj" />
     <ProjectReference Include="..\Luval.AI.Database\Luval.AI.Database.csproj" />
   </ItemGroup>

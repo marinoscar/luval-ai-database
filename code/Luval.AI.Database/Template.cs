@@ -67,9 +67,8 @@ You have created the following SQL statement to answer the question
 This is the result of the query
 {result}
 here is the question you have answer: {input}
-create an html page using javascript to create a chart to visualize the result,
-also use the bootstrap css framework, add a heading with a title for the report
-and include a description for the chart
+create the JSON configuration for a Chart.js javascript component to visualize the data
+Check the syntax of the JSON and make sure it is correct
 ";
 
     }
