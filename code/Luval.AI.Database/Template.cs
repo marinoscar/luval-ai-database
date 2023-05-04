@@ -45,16 +45,12 @@ Just provide the SQL statement and nothing more
 ";
 
         public static string SqlSufix = @"
-You are an agent designed to interact with a SQL database.
-You have use the following schema to answer the question
-{schema}
 You have created the following SQL statement to answer the question
 {sql}
 This is the result of the query
 {result}
-
 if the result of the query is NULL then respond ""I can't answer that question, I may not have the data"" other wise
-please provide answer to the following question and make sure to format the numbers
+please provide answer to the following question in no more than 100 characters and make sure to format the numbers
 with thousand separator and two decimal points: {input}
 ";
 
