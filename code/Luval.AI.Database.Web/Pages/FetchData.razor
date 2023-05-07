@@ -5,44 +5,58 @@
 @using Luval.AI.Database.Web.Data
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<style>
+    .middle-row {
+        position: absolute;
+        top: 60px; /* Adjust based on the height of your fixed-top row */
+        bottom: 60px; /* Adjust based on the height of your fixed-bottom row */
+        width: 100%;
+        overflow-y: auto;
+    }
+</style>
 
-<p>This component demonstrates fetching data from a service.</p>
+<!-- Fixed-top row -->
+<div class="bg-info text-white p-2 fixed-top">
+    <h1>Sample Chat Window</h1>
+</div>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<!-- Middle row -->
+<div class="middle-row">
+    <!-- Your middle row content goes here -->
+    <div id="component-container">
+        @for (int i = 0; i < Count; i++)
+        {
+            @CreateComponent(i)
+        }
+    </div>
+</div>
+
+<!-- Fixed-bottom row -->
+<div class="bg-info text-white p-2 fixed-bottom">
+    <Luval.AI.Database.WebLibrary.ChatPrompt DoClick="RunCommand"></Luval.AI.Database.WebLibrary.ChatPrompt>
+</div>
+
+
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private int Count = 0;
+    private RenderFragment DynamicRender { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    private RenderFragment CreateComponent(int i) => builder =>
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        builder.OpenComponent(0, typeof(SampleComponent));
+        builder.AddAttribute(1, "Content", string.Format("Item created number {0}", (i + 1).ToString().PadLeft(3, '0')));
+        builder.CloseComponent();
+    };
+
+    private void RunCommand()
+    {
+        Count++;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void M()
+    {
+
     }
 }

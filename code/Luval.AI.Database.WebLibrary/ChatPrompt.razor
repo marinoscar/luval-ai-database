@@ -1,0 +1,21 @@
+﻿<div class="row">
+    <div class="col-11">
+        <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter prompt">
+    </div>
+    <div class="col-sm-auto align-self-end">
+        <button type="button" class="btn btn-primary" @onclick="ButtonClick">Submit</button>
+    </div>
+</div>
+
+@*<form class="row row-cols-lg-auto g-3 align-items-center">*@
+
+
+@code {
+    [Parameter]
+    public Action DoClick { get; set; }
+
+    public void ButtonClick()
+    {
+        DoClick?.Invoke();
+    }
+}
